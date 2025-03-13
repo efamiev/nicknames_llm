@@ -35,3 +35,6 @@ life_complex-*.tar
 npm-debug.log
 /assets/node_modules/
 
+/.env
+
+.DS_Store

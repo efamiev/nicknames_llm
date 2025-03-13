@@ -7,9 +7,16 @@
 # General application configuration
 import Config
 
+llm_api_key =
+  System.get_env("LLM_API_KEY") ||
+    raise """
+    Environment variable LLM_API_KEY is missing.
+    """
+
 config :life_complex,
   ecto_repos: [LifeComplex.Repo],
-  generators: [timestamp_type: :utc_datetime]
+  generators: [timestamp_type: :utc_datetime],
+  llm_api_key: llm_api_key
 
 # Configures the endpoint
 config :life_complex, LifeComplexWeb.Endpoint,

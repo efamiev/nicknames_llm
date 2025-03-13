@@ -3,6 +3,9 @@ defmodule LifeComplexWeb.LifeComplexityLive.Index do
 
   alias LifeComplex.Research
   alias LifeComplex.Research.LifeComplexity
+  alias LifeComplex.Llm
+
+  require Logger
 
   @impl true
   def mount(_params, _session, socket) do
@@ -36,11 +39,6 @@ defmodule LifeComplexWeb.LifeComplexityLive.Index do
   end
 
   @impl true
-  def handle_info({LifeComplexWeb.LifeComplexityLive.FormComponent, {:saved, life_complexity}}, socket) do
-    {:noreply, stream_insert(socket, :life_complexities, life_complexity)}
-  end
-
-  @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     life_complexity = Research.get_life_complexity!(id)
     {:ok, _} = Research.delete_life_complexity(life_complexity)
@@ -53,45 +51,32 @@ defmodule LifeComplexWeb.LifeComplexityLive.Index do
     if socket.assigns.loading_api do
       {:noreply, socket}
     else
-      # Запускаем асинхронный запрос, чтобы не блокировать интерфейс
-      Task.async(fn ->
-        # Здесь должен быть ваш код для запроса к внешнему API
-        # Например:
-        # response = ApiClient.fetch_data(params)
-        # Имитируем долгий запрос
-        Process.sleep(1000)
-        response = %{data: "Данные из API", timestamp: DateTime.utc_now()}
-
-        # Отправляем сообщение обратно в LiveView процесс
-        send(self(), {:api_response, response})
-      end)
+      Task.async(fn -> Llm.fetch_data(self()) end)
 
       {:noreply, assign(socket, :loading_api, true)}
     end
   end
 
   @impl true
-  def handle_info({_, {:api_response, response}}, socket) do
-    # Здесь обрабатываем полученные данные
-    # Например, можно добавить их в коллекцию или обновить состояние
+  def handle_info({LifeComplexWeb.LifeComplexityLive.FormComponent, {:saved, life_complexity}}, socket) do
+    {:noreply, stream_insert(socket, :life_complexities, life_complexity)}
+  end
 
-    # В качестве примера просто создадим новую запись
-    # В реальном приложении здесь нужно адаптировать данные API к вашей структуре
-    # new_complexity = %LifeComplexity{
-    #   name: "Данные из API #{DateTime.utc_now()}",
-    #   description: "Получено из внешнего API: #{inspect(response.data)}"
-    # }
-    # 
-    # {:ok, saved_complexity} = Research.create_life_complexity(new_complexity)
-
+  def handle_info({_, {:api_response, _response}}, socket) do
     {:noreply,
      socket
-     # |> stream_insert(:life_complexities, saved_complexity)
      |> assign(:loading_api, false)}
   end
 
+  def handle_info({_, {:api_error, reason}}, socket) do
+    {:noreply,
+     socket
+     |> assign(:loading_api, false)
+     |> put_flash(:error, "Request LLM error #{inspect(reason)}")}
+  end
+
   def handle_info(msg, socket) do
-    IO.inspect(msg, label: "Unhandled message")
+    Logger.info("Unhandled message #{inspect(msg)}")
 
     {:noreply, socket}
   end
