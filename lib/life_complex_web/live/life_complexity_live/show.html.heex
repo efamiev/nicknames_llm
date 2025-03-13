@@ -1,0 +1,27 @@
+<.header>
+  Life complexity {@life_complexity.id}
+  <:subtitle>This is a life_complexity record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/life_complexities/#{@life_complexity}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit life_complexity</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Age">{@life_complexity.age}</:item>
+  <:item title="Sex">{@life_complexity.sex}</:item>
+</.list>
+
+<.back navigate={~p"/life_complexities"}>Back to life_complexities</.back>
+
+<.modal :if={@live_action == :edit} id="life_complexity-modal" show on_cancel={JS.patch(~p"/life_complexities/#{@life_complexity}")}>
+  <.live_component
+    module={LifeComplexWeb.LifeComplexityLive.FormComponent}
+    id={@life_complexity.id}
+    title={@page_title}
+    action={@live_action}
+    life_complexity={@life_complexity}
+    patch={~p"/life_complexities/#{@life_complexity}"}
+  />
+</.modal>

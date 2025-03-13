@@ -45,6 +45,18 @@ defmodule LifeComplexWeb.Router do
     end
   end
 
+  scope "/life_complexities", LifeComplexWeb do
+    pipe_through [:browser]
+
+    live "/", LifeComplexityLive.Index, :index
+    live "/new", LifeComplexityLive.Index, :new
+    live "/:id/edit", LifeComplexityLive.Index, :edit
+
+    live "/:id", LifeComplexityLive.Show, :show
+    live "/:id/show/edit", LifeComplexityLive.Show, :edit
+  end
+
+
   ## Authentication routes
 
   scope "/", LifeComplexWeb do
