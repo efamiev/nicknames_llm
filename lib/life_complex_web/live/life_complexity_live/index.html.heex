@@ -4,6 +4,13 @@
     <.link patch={~p"/life_complexities/new"}>
       <.button>New Life complexity</.button>
     </.link>
+    <.button phx-click="fetch_from_api" disabled={@loading_api}>
+      <%= if @loading_api do %>
+        Загрузка данных...
+      <% else %>
+        Получить данные из API
+      <% end %>
+    </.button>
   </:actions>
 </.header>
 
@@ -21,10 +28,7 @@
     <.link patch={~p"/life_complexities/#{life_complexity}/edit"}>Edit</.link>
   </:action>
   <:action :let={{id, life_complexity}}>
-    <.link
-      phx-click={JS.push("delete", value: %{id: life_complexity.id}) |> hide("##{id}")}
-      data-confirm="Are you sure?"
-    >
+    <.link phx-click={JS.push("delete", value: %{id: life_complexity.id}) |> hide("##{id}")} data-confirm="Are you sure?">
       Delete
     </.link>
   </:action>

@@ -56,7 +56,6 @@ defmodule LifeComplexWeb.Router do
     live "/:id/show/edit", LifeComplexityLive.Show, :edit
   end
 
-
   ## Authentication routes
 
   scope "/", LifeComplexWeb do

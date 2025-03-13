@@ -23,7 +23,9 @@ defmodule LifeComplex.ResearchTest do
     test "create_life_complexity/1 with valid data creates a life_complexity" do
       valid_attrs = %{age: 42, sex: "some sex"}
 
-      assert {:ok, %LifeComplexity{} = life_complexity} = Research.create_life_complexity(valid_attrs)
+      assert {:ok, %LifeComplexity{} = life_complexity} =
+               Research.create_life_complexity(valid_attrs)
+
       assert life_complexity.age == 42
       assert life_complexity.sex == "some sex"
     end
@@ -36,21 +38,29 @@ defmodule LifeComplex.ResearchTest do
       life_complexity = life_complexity_fixture()
       update_attrs = %{age: 43, sex: "some updated sex"}
 
-      assert {:ok, %LifeComplexity{} = life_complexity} = Research.update_life_complexity(life_complexity, update_attrs)
+      assert {:ok, %LifeComplexity{} = life_complexity} =
+               Research.update_life_complexity(life_complexity, update_attrs)
+
       assert life_complexity.age == 43
       assert life_complexity.sex == "some updated sex"
     end
 
     test "update_life_complexity/2 with invalid data returns error changeset" do
       life_complexity = life_complexity_fixture()
-      assert {:error, %Ecto.Changeset{}} = Research.update_life_complexity(life_complexity, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Research.update_life_complexity(life_complexity, @invalid_attrs)
+
       assert life_complexity == Research.get_life_complexity!(life_complexity.id)
     end
 
     test "delete_life_complexity/1 deletes the life_complexity" do
       life_complexity = life_complexity_fixture()
       assert {:ok, %LifeComplexity{}} = Research.delete_life_complexity(life_complexity)
-      assert_raise Ecto.NoResultsError, fn -> Research.get_life_complexity!(life_complexity.id) end
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Research.get_life_complexity!(life_complexity.id)
+      end
     end
 
     test "change_life_complexity/1 returns a life_complexity changeset" do

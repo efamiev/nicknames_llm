@@ -12,13 +12,7 @@ defmodule LifeComplexWeb.LifeComplexityLive.FormComponent do
         <:subtitle>Use this form to manage life_complexity records in your database.</:subtitle>
       </.header>
 
-      <.simple_form
-        for={@form}
-        id="life_complexity-form"
-        phx-target={@myself}
-        phx-change="validate"
-        phx-submit="save"
-      >
+      <.simple_form for={@form} id="life_complexity-form" phx-target={@myself} phx-change="validate" phx-submit="save">
         <.input field={@form[:age]} type="number" label="Age" />
         <.input field={@form[:sex]} type="text" label="Sex" />
         <:actions>

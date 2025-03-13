@@ -49,7 +49,9 @@ defmodule LifeComplexWeb.LifeComplexityLiveTest do
     test "updates life_complexity in listing", %{conn: conn, life_complexity: life_complexity} do
       {:ok, index_live, _html} = live(conn, ~p"/life_complexities")
 
-      assert index_live |> element("#life_complexities-#{life_complexity.id} a", "Edit") |> render_click() =~
+      assert index_live
+             |> element("#life_complexities-#{life_complexity.id} a", "Edit")
+             |> render_click() =~
                "Edit Life complexity"
 
       assert_patch(index_live, ~p"/life_complexities/#{life_complexity}/edit")
@@ -72,7 +74,10 @@ defmodule LifeComplexWeb.LifeComplexityLiveTest do
     test "deletes life_complexity in listing", %{conn: conn, life_complexity: life_complexity} do
       {:ok, index_live, _html} = live(conn, ~p"/life_complexities")
 
-      assert index_live |> element("#life_complexities-#{life_complexity.id} a", "Delete") |> render_click()
+      assert index_live
+             |> element("#life_complexities-#{life_complexity.id} a", "Delete")
+             |> render_click()
+
       refute has_element?(index_live, "#life_complexities-#{life_complexity.id}")
     end
   end
