@@ -3,7 +3,6 @@ defmodule LifeComplexWeb.LifeComplexityLive.Index do
 
   alias LifeComplex.Research
   alias LifeComplex.Research.LifeComplexity
-  alias LifeComplex.Llm
 
   require Logger
 
@@ -12,6 +11,7 @@ defmodule LifeComplexWeb.LifeComplexityLive.Index do
     {:ok,
      socket
      |> stream(:life_complexities, Research.list_life_complexities())
+     |> assign(:llm_result, nil)
      |> assign(:loading_api, false)}
   end
 
@@ -51,7 +51,11 @@ defmodule LifeComplexWeb.LifeComplexityLive.Index do
     if socket.assigns.loading_api do
       {:noreply, socket}
     else
-      Task.async(fn -> Llm.fetch_data(self()) end)
+      Task.async(fn ->
+        :poolboy.transaction(:llm_worker_pool, fn pid ->
+          LifeComplex.Worker.fetch_data(pid)
+        end)
+      end)
 
       {:noreply, assign(socket, :loading_api, true)}
     end
@@ -62,9 +66,10 @@ defmodule LifeComplexWeb.LifeComplexityLive.Index do
     {:noreply, stream_insert(socket, :life_complexities, life_complexity)}
   end
 
-  def handle_info({_, {:api_response, _response}}, socket) do
+  def handle_info({_, {:api_response, response}}, socket) do
     {:noreply,
      socket
+     |> assign(:llm_result, response)
      |> assign(:loading_api, false)}
   end
 
