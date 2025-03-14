@@ -5,12 +5,17 @@ defmodule LifeComplex.Llm do
     url = "https://openrouter.ai/api/v1/chat/completions"
     headers = [{"Content-Type", "application/json"}, {"Authorization", "Bearer " <> @llm_api_key}]
 
-    json = %{prompt: "Your request"}
+    json = %{
+      model: "deepseek/deepseek-chat:free",
+      messages: [
+        %{role: "system", content: ""},
+        %{role: "user", content: "Как дела?"}
+      ]
+    }
 
     case Req.post(url, json: json, headers: headers) do
-      {:ok, %Req.Response{status: 200, body: response_body}} ->
-        response = Jason.decode!(response_body)
-        send(pid, {:api_response, response})
+      {:ok, %Req.Response{status: 200, body: %{"choices" => [%{"message" => resp}]}}} ->
+        send(pid, {:api_response, resp})
 
       {:ok, %Req.Response{status: 400, body: reason}} ->
         send(pid, {:api_error, reason})
