@@ -18,6 +18,19 @@ config :life_complex,
   generators: [timestamp_type: :utc_datetime],
   llm_api_key: llm_api_key
 
+config :life_complex, LifeComplex.PromEx,
+  disabled: false,
+  manual_metrics_start_delay: :no_delay,
+  drop_metrics_groups: [],
+  grafana: [
+    host: "http://localhost:3000",
+    # Authenticate via Basic Auth
+    username: "admin",
+    password: "admin123",
+    upload_dashboards_on_start: true
+  ],
+  metrics_server: :disabled
+
 # Configures the endpoint
 config :life_complex, LifeComplexWeb.Endpoint,
   url: [host: "localhost"],

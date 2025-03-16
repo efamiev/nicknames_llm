@@ -5,7 +5,12 @@ defmodule LifeComplex.Worker do
   @llm_model "deepseek/deepseek-chat:free"
   @llm_api_url "https://openrouter.ai/api/v1/chat/completions"
 
-  @session Req.new(base_url: @llm_api_url, headers: [{"Content-Type", "application/json"}, {"Authorization", "Bearer " <> @llm_api_key}])
+  @llm_request Req.new(
+                 base_url: @llm_api_url,
+                 headers: [{"Content-Type", "application/json"}],
+                 auth: {:bearer, @llm_api_key},
+                 finch: LifeComplex.Finch
+               )
 
   def start_link(_) do
     GenServer.start_link(__MODULE__, nil)
@@ -14,7 +19,7 @@ defmodule LifeComplex.Worker do
   def init(_) do
     {:ok, nil}
   end
-  
+
   def fetch_data(pid) do
     GenServer.call(pid, :fetch_data)
   end
@@ -28,7 +33,7 @@ defmodule LifeComplex.Worker do
       ]
     }
 
-    case Req.post(@session, json: json) do
+    case Req.post(@llm_request, json: json) do
       {:ok, %Req.Response{status: 200, body: %{"choices" => [%{"message" => resp}]}}} ->
         IO.inspect(resp, label: "RESP BODY")
         {:reply, {:api_response, resp}, state}

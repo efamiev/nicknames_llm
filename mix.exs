@@ -54,7 +54,8 @@ defmodule LifeComplex.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
       {:req, "~> 0.5.0"},
-      {:poolboy, "~> 1.5"}
+      {:poolboy, "~> 1.5"},
+      {:prom_ex, "~> 1.11.0"}
     ]
   end
 

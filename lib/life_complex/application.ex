@@ -7,11 +7,13 @@ defmodule LifeComplex.Application do
 
   @impl true
   def start(_type, _args) do
+    LifeComplex.FinchLogger.attach()
+
     poolboy_config = [
       name: {:local, :llm_worker_pool},
       worker_module: LifeComplex.Worker,
       size: 500,
-      max_overflow: 0,
+      max_overflow: 0
     ]
 
     children = [
@@ -21,9 +23,11 @@ defmodule LifeComplex.Application do
       {Phoenix.PubSub, name: LifeComplex.PubSub},
       # Start the Finch HTTP client for sending emails
       {Finch, name: LifeComplex.Finch},
-      :poolboy.child_spec(:llm_worker_pool, poolboy_config),
+      # Prometheus metrics
+      LifeComplex.PromEx,
       # Start a worker by calling: LifeComplex.Worker.start_link(arg)
       # {LifeComplex.Worker, arg},
+      :poolboy.child_spec(:llm_worker_pool, poolboy_config),
       # Start to serve requests, typically the last entry
       LifeComplexWeb.Endpoint
     ]
