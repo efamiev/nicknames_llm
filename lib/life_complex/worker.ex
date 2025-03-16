@@ -20,11 +20,11 @@ defmodule LifeComplex.Worker do
     {:ok, nil}
   end
 
-  def fetch_data(pid) do
-    GenServer.call(pid, :fetch_data)
+  def fetch_data(pid, metadata) do
+    GenServer.call(pid, {:fetch_data, metadata})
   end
 
-  def handle_call(:fetch_data, _from, state) do
+  def handle_call({:fetch_data, metadata}, _from, state) do
     json = %{
       model: @llm_model,
       messages: [
@@ -33,7 +33,7 @@ defmodule LifeComplex.Worker do
       ]
     }
 
-    case Req.post(@llm_request, json: json) do
+    case Req.post(Req.merge(@llm_request, finch_private: metadata), json: json) do
       {:ok, %Req.Response{status: 200, body: %{"choices" => [%{"message" => resp}]}}} ->
         IO.inspect(resp, label: "RESP BODY")
         {:reply, {:api_response, resp}, state}

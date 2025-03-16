@@ -12,6 +12,7 @@ defmodule LifeComplexWeb.LifeComplexityLive.Index do
      socket
      |> stream(:life_complexities, Research.list_life_complexities())
      |> assign(:llm_result, nil)
+     |> put_request_id(Map.new(get_connect_info(socket, :x_headers) || %{}))
      |> assign(:loading_api, false)}
   end
 
@@ -51,9 +52,11 @@ defmodule LifeComplexWeb.LifeComplexityLive.Index do
     if socket.assigns.loading_api do
       {:noreply, socket}
     else
+      metadata = Logger.metadata()
+
       Task.async(fn ->
         :poolboy.transaction(:llm_worker_pool, fn pid ->
-          LifeComplex.Worker.fetch_data(pid)
+          LifeComplex.Worker.fetch_data(pid, metadata)
         end)
       end)
 
@@ -84,5 +87,15 @@ defmodule LifeComplexWeb.LifeComplexityLive.Index do
     Logger.info("Unhandled message #{inspect(msg)}")
 
     {:noreply, socket}
+  end
+
+  def put_request_id(socket, %{"x-request-id" => request_id}) do
+    Logger.metadata([request_id: request_id])
+
+    assign(socket, :request_id, request_id)
+  end
+  
+  def put_request_id(%{assigns: %{request_id: _request_id}} = socket, _connect_info) do
+    socket
   end
 end

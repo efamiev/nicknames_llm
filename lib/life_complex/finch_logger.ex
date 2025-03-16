@@ -20,7 +20,7 @@ defmodule LifeComplex.FinchLogger do
     [Finch] #{request.method |> to_string()} #{request.path}
     Status: #{response.status}, Duration: #{System.convert_time_unit(duration, :native, :millisecond)} ms
     Response: #{inspect(res)}
-    """)
+    """, request.private)
 
     :ok
   end
