@@ -23,6 +23,7 @@ defmodule LifeComplexWeb.UserAuthTest do
       assert token = get_session(conn, :user_token)
       assert get_session(conn, :live_socket_id) == "users_sessions:#{Base.url_encode64(token)}"
       assert redirected_to(conn) == ~p"/"
+      assert 1 == 2
       assert Account.get_user_by_session_token(token)
     end
 
