@@ -98,4 +98,8 @@ defmodule LifeComplexWeb.LifeComplexityLive.Index do
   def put_request_id(%{assigns: %{request_id: _request_id}} = socket, _connect_info) do
     socket
   end
+  
+  def put_request_id(socket, _connect_info) do
+    socket
+  end
 end

@@ -35,7 +35,6 @@ defmodule LifeComplex.Worker do
 
     case Req.post(Req.merge(@llm_request, finch_private: metadata), json: json) do
       {:ok, %Req.Response{status: 200, body: %{"choices" => [%{"message" => resp}]}}} ->
-        IO.inspect(resp, label: "RESP BODY")
         {:reply, {:api_response, resp}, state}
 
       {:ok, %Req.Response{status: 400, body: reason}} ->
