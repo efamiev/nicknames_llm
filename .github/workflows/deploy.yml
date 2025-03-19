@@ -52,8 +52,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          tar_tmp_path: "/temp_actions"
-          source: "release.tar.gz"
+          source: "mix.exs"
           target: "${{ env.DEPLOY_PATH }}"
 
       # 4. Развёртывание и запуск на сервере
