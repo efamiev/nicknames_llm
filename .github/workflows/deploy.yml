@@ -34,9 +34,6 @@ jobs:
       - name: Compile Elixir code
         run: mix compile
 
-      - name: Install Node.js deps
-        run: npm ci --prefix ./assets
-
       - name: Build and digest assets
         run: mix assets.deploy
 
