@@ -45,7 +45,7 @@ jobs:
 
       # 3. Копирование релиза на сервер
       - name: Pack release for deploy
-        run: tar -czf release.tar.gz -C _build/prod/rel/ myapp
+        run: tar -czf release.tar.gz -C _build/prod/rel/ life_complex
       - name: Upload release to server
         uses: appleboy/scp-action@v0.1.7
         with:
