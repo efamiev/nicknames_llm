@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-22.04
     env:
       MIX_ENV: prod                   # Режим сборки - продакшн
-      DEPLOY_PATH: /opt/llm_nicknames         # Путь на сервере для деплоя
+      DEPLOY_PATH: /opt/llm_nicknames/         # Путь на сервере для деплоя
       SERVICE_NAME: llm_nicknames.service     # Имя systemd-сервиса
       LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
     steps:
