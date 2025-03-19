@@ -9,8 +9,9 @@ jobs:
     runs-on: ubuntu-22.04
     env:
       MIX_ENV: prod                   # Режим сборки - продакшн
-      DEPLOY_PATH: /opt/myapp         # Путь на сервере для деплоя
-      SERVICE_NAME: myapp.service     # Имя systemd-сервиса
+      DEPLOY_PATH: /opt/llm_nicknames         # Путь на сервере для деплоя
+      SERVICE_NAME: llm_nicknames.service     # Имя systemd-сервиса
+      LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
     steps:
       # 1. Сборка проекта
       - name: Checkout code
@@ -92,4 +93,3 @@ jobs:
           # Передаем секреты в среду исполнения скрипта
           SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
