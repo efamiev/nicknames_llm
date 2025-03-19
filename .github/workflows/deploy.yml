@@ -23,11 +23,6 @@ jobs:
           elixir-version: '1.18.3' # [Required] Define the Elixir version
           otp-version: '27.3'      # [Required] Define the Erlang/OTP version
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '22.14'       # LTS Node.js для ассетов
-
       - name: Install Elixir deps (prod)
         run: mix deps.get --only prod
 
