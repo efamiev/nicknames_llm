@@ -19,7 +19,8 @@ jobs:
       DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}        # Путь на сервере для деплоя
       SERVICE_NAME: ${{ secrets.SERVICE_NAME }}     # Имя systemd-сервиса
       LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
-      DATABASE_URL: ecto://postgres:postgres@host.docker.internal:5432/life_complex_dev
+      SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+      DATABASE_URL: ecto://postgres:postgres@postgres:5432/life_complex_dev
     steps:
       # 1. Сборка проекта
       - name: Checkout code
