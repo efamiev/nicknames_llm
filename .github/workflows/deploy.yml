@@ -93,7 +93,7 @@ jobs:
             rm ${{ env.DEPLOY_PATH }}/${{ env.VERSION }}/release.tar.gz
             
             echo "Update current symlink"
-            ln -nfs tar -xzf ${{ env.DEPLOY_PATH }}/${{ env.VERSION }} ${{ env.DEPLOY_PATH }}/current
+            ln -nfs ${{ env.DEPLOY_PATH }}/${{ env.VERSION }} ${{ env.DEPLOY_PATH }}/current
 
             echo "Running database migrations"
             ${{ env.DEPLOY_PATH }}/current/life_complex/bin/migrate
