@@ -94,7 +94,7 @@ jobs:
             rm ${{ env.DEPLOY_PATH }}/${{ env.VERSION }}/release.tar.gz
             
             echo "Update current symlink"
-            ln -nfs ${{ env.DEPLOY_PATH }}/${{ env.VERSION }}/* ${{ env.DEPLOY_PATH }}/current
+            ln -nfs ${{ env.DEPLOY_PATH }}/${{ env.VERSION }}/life_complex/* ${{ env.DEPLOY_PATH }}/current
 
             echo "Set env variables"
             set -a && source ${{ env.DEPLOY_PATH }}/../.env && set +a
