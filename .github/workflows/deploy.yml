@@ -19,6 +19,8 @@ jobs:
       DEPLOY_PATH: /opt/llm_nicknames/releases        # Путь на сервере для деплоя
       SERVICE_NAME: llm_nicknames.service     # Имя systemd-сервиса
       LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+      SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
     steps:
       # 1. Сборка проекта
       - name: Checkout code
