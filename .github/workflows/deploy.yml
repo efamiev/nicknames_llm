@@ -61,7 +61,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           source: "release.tar.gz"
-          target: "${{ env.DEPLOY_PATH }}/%{{ env.VERSION }}"
+          target: "${{ env.DEPLOY_PATH }}/${{ env.VERSION }}"
 
       # 4. Развёртывание и запуск на сервере
       - name: Deploy and restart service
