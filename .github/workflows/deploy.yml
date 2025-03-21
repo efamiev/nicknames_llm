@@ -95,7 +95,7 @@ jobs:
             ln -nfs ${{ env.DEPLOY_PATH }}/${{ env.VERSION }} ${{ env.DEPLOY_PATH }}/current
 
             echo "Running database migrations"
-            ${{ env.DEPLOY_PATH }}/current/life_complex/bin/migrate
+            ${{ env.DEPLOY_PATH }}/current/${{ env.VERSION }}/life_complex/bin/migrate
 
             echo "Starting new service"
             systemctl restart dotanicks.service
