@@ -13,7 +13,6 @@ jobs:
         ports: ['5432:5432']
         env:
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: db
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -25,7 +24,7 @@ jobs:
       SERVICE_NAME: ${{ secrets.SERVICE_NAME }}     # Имя systemd-сервиса
       LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
       SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
-      DATABASE_URL: ecto://postgres:postgres@localhost:5432/db
+      DATABASE_URL: ecto://postgres:postgres@localhost:5432/life_complex
     steps:
       # 1. Сборка проекта
       - name: Checkout code
