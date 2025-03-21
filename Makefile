@@ -21,6 +21,12 @@ dev-container-bash: dev-up-container
 dev-stop:
 	docker-compose -f docker-compose.dev.yml stop 
 
+dev-deps-start:
+	docker-compose -f docker-compose.dev.yml up -d postgres prometheus grafana nginx
+
+dev-deps-stop:
+	docker-compose -f docker-compose.dev.yml stop postgres prometheus grafana nginx
+
 # Коммады для билда нужно актуализировать
 up-release:
 	docker run -p 4000:4000 --env-file ./.env.prod -it bar_joker_prod 
