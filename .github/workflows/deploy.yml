@@ -88,7 +88,8 @@ jobs:
             set -e                         # завершать при ошибках
 
             echo "Deploying new release to ${DEPLOY_PATH}"
-            tar -xzf ${{ env.DEPLOY_PATH }}/${{ env.VERSION }}/release.tar.gz life_complex
+            tar -xzf ${{ env.DEPLOY_PATH }}/${{ env.VERSION }}/release.tar.gz -C ${{ env.DEPLOY_PATH }}/${{ env.VERSION }}
+            rm ${{ env.DEPLOY_PATH }}/${{ env.VERSION }}/release.tar.gz
             
             echo "Update current symlink"
             ln -nfs ${{ env.DEPLOY_PATH }}/${{ env.VERSION }} ${{ env.DEPLOY_PATH }}/current
