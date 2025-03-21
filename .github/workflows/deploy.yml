@@ -50,6 +50,9 @@ jobs:
       - name: Extract version from mix.exs
         id: version
         run: echo "VERSION=$(mix run -e 'IO.puts(Mix.Project.config()[:version])')" >> $GITHUB_ENV
+        env:
+          # SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       # 3. Копирование релиза на сервер
       - name: Pack release for deploy
