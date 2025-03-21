@@ -89,10 +89,15 @@ jobs:
 
             echo "Deploying new release to ${DEPLOY_PATH}"
             tar -xzf ${{ env.DEPLOY_PATH }}/${{ env.VERSION }}/release.tar.gz -C ${{ env.DEPLOY_PATH }}/${{ env.VERSION }}
+
+            echo "Delete tar release"
             rm ${{ env.DEPLOY_PATH }}/${{ env.VERSION }}/release.tar.gz
             
             echo "Update current symlink"
             ln -nfs ${{ env.DEPLOY_PATH }}/${{ env.VERSION }} ${{ env.DEPLOY_PATH }}/current
+
+            echo "Set env variables"
+            set -a && source ${{ env.DEPLOY_PATH }}../.env && set +a
 
             echo "Running database migrations"
             ${{ env.DEPLOY_PATH }}/current/${{ env.VERSION }}/life_complex/bin/migrate
