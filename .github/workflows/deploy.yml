@@ -8,7 +8,7 @@ jobs:
   deploy:
     runs-on: ubuntu-22.04
     services:
-      postgres:
+      db:
         image: postgres:17.4
         ports: ['5432:5432']
         env:
@@ -20,7 +20,7 @@ jobs:
       SERVICE_NAME: ${{ secrets.SERVICE_NAME }}     # Имя systemd-сервиса
       LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
       SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
-      DATABASE_URL: ecto://postgres:postgres@postgres:5432/life_complex_dev
+      DATABASE_URL: ecto://postgres:postgres@db:5432/life_complex_dev
     steps:
       # 1. Сборка проекта
       - name: Checkout code
