@@ -20,7 +20,7 @@ jobs:
       SERVICE_NAME: ${{ secrets.SERVICE_NAME }}     # Имя systemd-сервиса
       LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
       SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
-      DATABASE_URL: ecto://postgres:postgres@db:5432/life_complex
+      DATABASE_URL: ecto://postgres:postgres@db:5432/db
     steps:
       # 1. Сборка проекта
       - name: Checkout code
@@ -81,23 +81,23 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |                        # Многострочный скрипт на удалённом сервере
             set -e                         # завершать при ошибках
-            echo "Stopping old service (if running)"
-            systemctl stop ${{ env.SERVICE_NAME }} || true
 
             echo "Deploying new release to ${DEPLOY_PATH}"
-            sudo rm -rf ${{ env.DEPLOY_PATH }}/*       # очистка старых файлов
-            sudo tar -xzf ${{ env.DEPLOY_PATH }}/release.tar.gz -C ${{ env.DEPLOY_PATH }}
-            sudo rm ${{ env.DEPLOY_PATH }}/release.tar.gz
+            # rm -rf ${{ env.DEPLOY_PATH }}/*       # очистка старых файлов
+            tar -xzf ${{ env.DEPLOY_PATH }}/${{ env.VERSION }}/release.tar.gz -C life_complex
+            rm ${{ env.DEPLOY_PATH }}/${{ env.VERSION }}/release.tar.gz
+            
+            echo "Update current symlink"
+            ln -nfs tar -xzf ${{ env.DEPLOY_PATH }}/${{ env.VERSION }} ${{ env.DEPLOY_PATH }}/current
 
             echo "Running database migrations"
-            sudo -u phoenix ${DEPLOY_PATH}/bin/myapp eval "MyApp.Release.migrate"
+            ${{ env.DEPLOY_PATH }}/current/life_complex/bin/migrate
 
             echo "Starting new service"
-            sudo systemctl daemon-reload
-            sudo systemctl start ${{ env.SERVICE_NAME }}
+            systemctl restart dotanicks.service
 
             echo "Checking service status"
-            sudo systemctl is-active --quiet ${{ env.SERVICE_NAME }} && echo "✅ Deploy succeeded: service is active." || (echo "❌ Service failed to start!" && sudo systemctl status ${{ env.SERVICE_NAME }} --no-pager && exit 1)
+            systemctl is-active --quiet ${{ env.SERVICE_NAME }} && echo "✅ Deploy succeeded: service is active." || (echo "❌ Service failed to start!" && sudo systemctl status ${{ env.SERVICE_NAME }} --no-pager && exit 1)
         env:
           # Передаем секреты в среду исполнения скрипта
           SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
