@@ -4,7 +4,7 @@ defmodule LifeComplex.MixProject do
   def project do
     [
       app: :life_complex,
-      version: "0.1.1",
+      version: "0.1.2",
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
@@ -55,7 +55,8 @@ defmodule LifeComplex.MixProject do
       {:bandit, "~> 1.5"},
       {:req, "~> 0.5.0"},
       {:poolboy, "~> 1.5"},
-      {:prom_ex, "~> 1.11.0"}
+      {:prom_ex, "~> 1.11.0"},
+      {:ecto_psql_extras, "~> 0.6"}
     ]
   end
 

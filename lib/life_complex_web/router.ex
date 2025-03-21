@@ -52,7 +52,7 @@ defmodule LifeComplexWeb.Router do
 
   scope "/admin" do
     pipe_through [:browser, :admins_only]
-    live_dashboard "/dashboard", metrics: LifeComplexWeb.Telemetry
+    live_dashboard "/dashboard", ecto_repos: [LifeComplex.Repo], metrics: LifeComplexWeb.Telemetry
   end
 
   defp admin_basic_auth(conn, _opts) do
