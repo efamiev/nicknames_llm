@@ -97,7 +97,7 @@ jobs:
             ln -nfs ${{ env.DEPLOY_PATH }}/${{ env.VERSION }} ${{ env.DEPLOY_PATH }}/current
 
             echo "Set env variables"
-            set -a && source ${{ env.DEPLOY_PATH }}../.env && set +a
+            set -a && source ${{ env.DEPLOY_PATH }}/../.env && set +a
 
             echo "Running database migrations"
             ${{ env.DEPLOY_PATH }}/current/${{ env.VERSION }}/life_complex/bin/migrate
