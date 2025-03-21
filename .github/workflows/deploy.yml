@@ -100,7 +100,7 @@ jobs:
             set -a && source ${{ env.DEPLOY_PATH }}/../.env && set +a
 
             echo "Running database migrations"
-            ${{ env.DEPLOY_PATH }}/current/${{ env.VERSION }}/life_complex/bin/migrate
+            ${{ env.DEPLOY_PATH }}/current/bin/migrate
 
             echo "Starting new service"
             sudo systemctl restart dotanicks.service
