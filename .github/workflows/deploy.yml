@@ -46,15 +46,12 @@ jobs:
       - name: Add server to known_hosts
         run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
-      # --- Получаем версию из mix.exs ---
+      # 3. Получаем версию из mix.exs ---
       - name: Extract version from mix.exs
         id: version
-        run: echo "VERSION=$(mix run -e 'IO.puts(Mix.Project.config()[:version])')" >> $GITHUB_ENV
-        env:
-          SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
 
-      # 3. Копирование релиза на сервер
+      # 4. Копирование релиза на сервер
       - name: Pack release for deploy
         run: tar -czf release.tar.gz -C _build/prod/rel/ life_complex
       - name: Upload release to server
@@ -66,7 +63,7 @@ jobs:
           source: "release.tar.gz"
           target: "${{ env.DEPLOY_PATH }}/${{ env.VERSION }}"
 
-      # 4. Развёртывание и запуск на сервере
+      # 5. Развёртывание и запуск на сервере
       - name: Deploy and restart service
         uses: appleboy/ssh-action@v1.2.0
         with:
