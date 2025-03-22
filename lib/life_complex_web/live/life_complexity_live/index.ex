@@ -57,8 +57,8 @@ defmodule LifeComplexWeb.LifeComplexityLive.Index do
       Task.async(fn ->
         :poolboy.transaction(:llm_worker_pool, fn pid ->
           LifeComplex.Worker.fetch_data(pid, metadata)
-        end)
-      end, 30_000)
+        end, 30_000)
+      end)
 
       {:noreply, assign(socket, :loading_api, true)}
     end
