@@ -52,7 +52,7 @@ defmodule LifeComplexWeb do
 
   def live_view do
     quote do
-      use Phoenix.LiveView,
+      use Phoenix.LiveView, log: :info,
         layout: {LifeComplexWeb.Layouts, :app}
 
       unquote(html_helpers())

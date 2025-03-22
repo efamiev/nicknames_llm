@@ -21,11 +21,16 @@ dev-container-bash: dev-up-container
 dev-stop:
 	docker-compose -f docker-compose.dev.yml stop 
 
+# Запуск зависимостей
 dev-deps-start:
 	docker-compose -f docker-compose.dev.yml up -d postgres prometheus grafana nginx
 
 dev-deps-stop:
 	docker-compose -f docker-compose.dev.yml stop postgres prometheus grafana nginx
+
+# Локальный запуск
+dev-app-start:
+	set -a && source .env && set +a && MIX_ENV=dev iex -S mix phx.server 
 
 # Коммады для билда нужно актуализировать
 up-release:
